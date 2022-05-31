@@ -2,11 +2,10 @@ package com.yuwandianto.patsman1jorong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,10 +13,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.provider.Settings;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -35,27 +30,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    ProgressDialog loading, statusKoneksi;
-
-
+    ProgressDialog loading;
     public ListView lv;
+    String namaKelas;
 
-    String namaKelas, alamat;
-
-    private static String JSON_URL = "https://json.yuwandianto.web.id/data_kelas.json";
+    private static final String JSON_URL = "https://json.yuwandianto.web.id/data_kelas.json";
 
     ArrayList<HashMap<String,String>> listData;
 
-    Dialog dialog;
-
     TextView text_pilihKelas;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         text_pilihKelas = findViewById(R.id.txt_pilihKelas);
 
         if (!isConnected(this)) {
-
+            openAlertDialog();
             text_pilihKelas.setText("Aplikasi ini memerlukan koneksi internet !");
 
         } else {
@@ -79,53 +69,6 @@ public class MainActivity extends AppCompatActivity {
             getData.execute();
         }
 
-
-
-    }
-
-    public void konfirmasiKoneksi() {
-
-        dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.costum_dialog);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_costum_dialog));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-
-        Button settings = dialog.findViewById(R.id.tombolSetting);
-        Button keluar = dialog.findViewById(R.id.tombolKeluar);
-
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
-            }
-        });
-
-        keluar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-    }
-
-    private void showCostumDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("Silakan periksa koneksi internet anda").
-                setCancelable(false)
-                .setPositiveButton("Pengaturan Koneksi", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                        startActivity(new Intent(Settings.ACTION_DATA_USAGE_SETTINGS));
-                    }
-                }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
     }
 
 
@@ -136,11 +79,26 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobiledata = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-        if ((wifi != null && wifi.isConnected()) || (mobiledata != null && mobiledata.isConnected())) {
-            return true;
-        } else {
-            return false;
-        }
+        return (wifi != null && wifi.isConnected()) || (mobiledata != null && mobiledata.isConnected());
+    }
+
+    public void openAlertDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("Peringatan");
+        builder.setMessage("Aplikasi ini memerlukan koneksi internet. Silakan aktifkan paket data atau hubungkan ke Wifi");
+        builder.setPositiveButton("Settings", (dialog, which) -> {
+
+            startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
+            finish();
+            System.exit(0);
+        });
+        builder.setNegativeButton("Batal", (dialog, which) -> {
+            finish();
+            System.exit(0);
+        });
+        builder.show();
     }
 
 
@@ -225,23 +183,20 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(MainActivity.this, "Data berhasil di ambil dari server, silakan pilih kelas", Toast.LENGTH_SHORT).show();
 
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    JSONObject jsonObjecta = null;
-                    try {
-                        jsonObjecta = new JSONObject(s);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            lv.setOnItemClickListener((adapterView, view, position, l) -> {
+                JSONObject jsonObjecta = null;
+                try {
+                    jsonObjecta = new JSONObject(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    try {
-                        JSONObject jsonArraya = jsonObjecta.getJSONArray("data").getJSONObject(position);
-                        daftarMapel(jsonArraya);
+                try {
+                    JSONObject jsonArraya = jsonObjecta.getJSONArray("data").getJSONObject(position);
+                    daftarMapel(jsonArraya);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             });
 

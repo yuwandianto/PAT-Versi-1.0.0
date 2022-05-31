@@ -1,17 +1,14 @@
 package com.yuwandianto.patsman1jorong;
 
-import static android.widget.Toast.makeText;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,17 +69,14 @@ public class MainActivity2 extends AppCompatActivity {
 
             lv2.setClickable(true);
 
-            lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    try {
-                        String alamat = daftarMapel.getJSONObject(position).getString("alamat");
-                        keweb(alamat);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+            lv2.setOnItemClickListener((adapterView, view, position, l) -> {
+                try {
+                    String alamat = daftarMapel.getJSONObject(position).getString("alamat");
+                    keweb(alamat);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             });
 
         } catch (JSONException e) {

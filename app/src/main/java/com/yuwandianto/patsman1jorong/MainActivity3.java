@@ -2,13 +2,12 @@ package com.yuwandianto.patsman1jorong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,6 +18,7 @@ public class MainActivity3 extends AppCompatActivity {
     TextView txtKu;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +66,6 @@ public class MainActivity3 extends AppCompatActivity {
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobiledata = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-        if ((wifi != null && wifi.isConnected()) || (mobiledata != null && mobiledata.isConnected())) {
-            return true;
-        } else {
-            return false;
-        }
+        return (wifi != null && wifi.isConnected()) || (mobiledata != null && mobiledata.isConnected());
     }
 }
