@@ -18,7 +18,7 @@
             android:id="@+id/txt_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/selamat_datang"
+            android:text="@string/sma_negeri_1_jorong"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/di_aplikasi"
+            android:text="@string/maju_bersama_hebat_semua"
             android:textColor="@color/white"
             android:textSize="12sp" />
     </LinearLayout>
