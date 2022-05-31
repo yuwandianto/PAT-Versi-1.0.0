@@ -2,11 +2,17 @@ package com.yuwandianto.patsman1jorong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -30,7 +36,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    ProgressDialog loading;
+    ProgressDialog loading, statusKoneksi;
+
 
     public ListView lv;
 
@@ -45,19 +52,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loading = ProgressDialog.show(MainActivity.this,"Silakan tunggu !","Sedang memuat data ...");
+        if (!isConnected(this)) {
+            startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
+            finish();
+        } else {
 
-        listData = new ArrayList<>();
+            loading = ProgressDialog.show(MainActivity.this,"Silakan tunggu !","Sedang memuat data ...");
 
-        lv = findViewById(R.id.listKelas);
+            listData = new ArrayList<>();
 
-        getData getData = new getData();
-        getData.execute();
+            lv = findViewById(R.id.listKelas);
+
+            getData getData = new getData();
+            getData.execute();
+        }
+
+
 
     }
 
+    private void showCostumDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Silakan periksa koneksi internet anda").
+                setCancelable(false)
+                .setPositiveButton("Pengaturan Koneksi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        startActivity(new Intent(Settings.ACTION_DATA_USAGE_SETTINGS));
+                    }
+                }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-     public class getData extends AsyncTask<String,String,String> {
+                    }
+                });
+    }
+
+
+    private boolean isConnected(MainActivity mainActivity) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobiledata = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if ((wifi != null && wifi.isConnected()) || (mobiledata != null && mobiledata.isConnected())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public class getData extends AsyncTask<String,String,String> {
 
         @Override
         protected String doInBackground(String... strings) {

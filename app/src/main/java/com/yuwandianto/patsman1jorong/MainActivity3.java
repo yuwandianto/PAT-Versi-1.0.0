@@ -36,14 +36,15 @@ public class MainActivity3 extends AppCompatActivity {
         websetingku.setDefaultTextEncodingName("utf-8");
         webviewku.setWebViewClient(new WebViewClient());
 
-        if (!alamat.equals("0")) {
-            webviewku.loadUrl(alamat);
-        } else {
-
-            txtKu.setText("Maaf halaman ujian belum dibuka");
+        if (alamat.equals("0")) {
+            txtKu.setText("Maaf, soal belum diaktifkan. silakan sesuaikan dengan jadwal yang ada");
             webviewku.destroy();
+        } else if (alamat.equals("1")) {
+            txtKu.setText("Maaf, jadwal untuk pelajaran ini sudah berakhir.");
+            webviewku.destroy();
+        } else {
+            webviewku.loadUrl(alamat);
         }
-
 
     }
 }
