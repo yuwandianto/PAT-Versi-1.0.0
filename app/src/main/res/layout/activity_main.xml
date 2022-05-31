@@ -32,11 +32,12 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txt_pilihKelas"
         android:gravity="center_horizontal"
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Silakan Pilih Kelas"
+
         android:textStyle="bold"
         android:textSize="20sp"
         android:textColor="@color/black" />

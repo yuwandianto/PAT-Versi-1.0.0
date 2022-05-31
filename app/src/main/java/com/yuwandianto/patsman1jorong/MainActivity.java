@@ -3,6 +3,7 @@ package com.yuwandianto.patsman1jorong;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,10 +15,13 @@ import android.os.Bundle;
 
 import android.provider.Settings;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,6 +35,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,14 +52,21 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<HashMap<String,String>> listData;
 
+    Dialog dialog;
+
+    TextView text_pilihKelas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        text_pilihKelas = findViewById(R.id.txt_pilihKelas);
+
         if (!isConnected(this)) {
-            startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
-            finish();
+
+            text_pilihKelas.setText("Aplikasi ini memerlukan koneksi internet !");
+
         } else {
 
             loading = ProgressDialog.show(MainActivity.this,"Silakan tunggu !","Sedang memuat data ...");
@@ -68,6 +80,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+    }
+
+    public void konfirmasiKoneksi() {
+
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.costum_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.bg_costum_dialog));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        Button settings = dialog.findViewById(R.id.tombolSetting);
+        Button keluar = dialog.findViewById(R.id.tombolKeluar);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
+            }
+        });
+
+        keluar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -181,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
             lv.setAdapter(listAdapter);
             loading.cancel();
             lv.setClickable(true);
+
+            text_pilihKelas.setText("Silakan Pilih Kelas");
 
             Toast.makeText(MainActivity.this, "Data berhasil di ambil dari server, silakan pilih kelas", Toast.LENGTH_SHORT).show();
 

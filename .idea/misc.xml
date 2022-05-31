@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Server_1/AndroidStudioProjects/PAT-Versi-1.0.0/app/src/main/res/layout/activity_main2.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/bg_costum_dialog.xml" value="0.1765" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main3.xml" value="0.24168126094570927" />
+        <entry key="app/src/main/res/layout/costum_dialog.xml" value="0.5" />
         <entry key="app/src/main/res/layout/data_kelas.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/layout/data_mapel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_data.xml" value="0.5" />
