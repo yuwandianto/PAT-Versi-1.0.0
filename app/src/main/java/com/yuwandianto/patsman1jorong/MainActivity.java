@@ -19,7 +19,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         text_pilihKelas = findViewById(R.id.txt_pilihKelas);
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     private boolean isConnected(MainActivity mainActivity) {
 
@@ -180,9 +179,6 @@ public class MainActivity extends AppCompatActivity {
             lv.setClickable(true);
 
             text_pilihKelas.setText("Silakan Pilih Kelas");
-
-            Toast.makeText(MainActivity.this, "Data berhasil di ambil dari server, silakan pilih kelas", Toast.LENGTH_SHORT).show();
-
             lv.setOnItemClickListener((adapterView, view, position, l) -> {
                 JSONObject jsonObjecta = null;
                 try {

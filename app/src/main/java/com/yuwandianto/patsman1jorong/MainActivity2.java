@@ -2,18 +2,17 @@ package com.yuwandianto.patsman1jorong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +23,8 @@ public class MainActivity2 extends AppCompatActivity {
     String namaMapel;
 
     ArrayList<HashMap<String, String>> listData;
-//    ArrayList<String> listData;
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +43,13 @@ public class MainActivity2 extends AppCompatActivity {
 
         try {
             JSONArray daftarMapel = mapel.getJSONArray("MataPelajaran");
+            String namaKelas = mapel.getString("kelas");
 
+            TextView txtPilihMapel = findViewById(R.id.txtPilihMapel);
+            txtPilihMapel.setText("Daftar Mata Pelajaran "+namaKelas);
 
             for (int i = 0; i < daftarMapel.length(); i++) {
-//                namaMapel = daftarMapel.getString(i);
+
                 JSONObject namamapel = new JSONObject(daftarMapel.getString(i));
                 namaMapel = namamapel.getString("namaMapel");
                 HashMap<String,String> data = new HashMap<>();

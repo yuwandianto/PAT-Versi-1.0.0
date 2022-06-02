@@ -3,25 +3,36 @@ package com.yuwandianto.patsman1jorong;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity3 extends AppCompatActivity {
     WebView webviewku;
     WebSettings websetingku;
     TextView txtKu;
 
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_main3);
 
         txtKu = (TextView)findViewById(R.id.txtKu);
@@ -56,8 +67,50 @@ public class MainActivity3 extends AppCompatActivity {
             }
         }
 
-
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.moveTaskToFront(getTaskId(),0);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.moveTaskToFront(getTaskId(),0);
+    }
+
+
+    //    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        hideNavigationBar();
+//    }
+//
+//    private void hideNavigationBar() {
+//        final View decorView = this.getWindow().getDecorView();
+//        final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+//        Timer timer = new Timer();
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                MainActivity3.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        decorView.setSystemUiVisibility(uiOptions);
+//                    }
+//                });
+//            }
+//        };
+//        timer.scheduleAtFixedRate(task, 1,2);
+//    }
 
     private boolean isConnected2(MainActivity3 mainActivity3) {
 
